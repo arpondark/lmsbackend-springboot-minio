@@ -1,19 +1,33 @@
 package site.shazan.lmsbackend.model;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 import lombok.Data;
+import org.hibernate.annotations.CreationTimestamp;
+
+import java.time.LocalDateTime;
 
 @Data
 @Entity
+@Table(name = "reviews")
 public class Review {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String reviewId;
-    private String courseId;
-    private String userId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "course_id", nullable = false)
+    private Course course;
+
+    @Column(length = 1000)
     private String reviewText;
-    private String rating;
+
+    @Column(nullable = false)
+    private Integer rating; // 1-5 stars
+
+    @CreationTimestamp
+    private LocalDateTime createdAt;
 }

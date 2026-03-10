@@ -1,28 +1,24 @@
 package site.shazan.lmsbackend.dto;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import site.shazan.lmsbackend.model.Role;
 
 import java.time.LocalDateTime;
-
 
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserResponse {
+public class ReviewResponse {
     private Long id;
+    private Long userId;
     private String username;
-    private String email;
-    private String firstName;
-    private String lastName;
-    private Role role;
+    private Long courseId;
+    private String courseName;
+    private String reviewText;
+    private Integer rating;
     private LocalDateTime createdAt;
-    private LocalDateTime updatedAt;
-    private Integer enrolledCoursesCount;
-    private Integer createdCoursesCount;
 }
+
