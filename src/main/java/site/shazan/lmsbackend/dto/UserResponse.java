@@ -20,7 +20,7 @@ public class UserResponse {
     private String email;
     private String firstName;
     private String lastName;
-    private Role role;
+    private Role role = Role.USER;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
     private Integer enrolledCoursesCount;
