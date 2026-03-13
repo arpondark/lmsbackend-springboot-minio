@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import site.shazan.lmsbackend.dto.AdminUserRequest;
 import site.shazan.lmsbackend.dto.UserRequest;
 import site.shazan.lmsbackend.dto.UserResponse;
 import site.shazan.lmsbackend.service.UserService;
@@ -20,6 +21,11 @@ public class UserController {
     @PostMapping
     public ResponseEntity<UserResponse> createUser(@Valid @RequestBody UserRequest request) {
         UserResponse response = userService.addUser(request);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+    @PostMapping("/admin")
+    public ResponseEntity<UserResponse> createUserInDifferentRole(@Valid @RequestBody AdminUserRequest request) {
+        UserResponse response = userService.addUserAsAdmin(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 

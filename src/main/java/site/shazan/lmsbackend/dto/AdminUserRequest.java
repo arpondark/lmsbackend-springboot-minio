@@ -10,7 +10,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserRequest {
+public class AdminUserRequest {
     @NotBlank(message = "Username is required")
     @Size(min = 3, max = 50)
     private String username;
@@ -29,5 +29,8 @@ public class UserRequest {
 
     private String firstName;
     private String lastName;
+
+    @NotBlank(message = "Role is required")
     private String role;
 }
+

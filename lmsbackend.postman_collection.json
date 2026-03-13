@@ -10,6 +10,10 @@
       "value": "http://localhost:8080"
     },
     {
+      "key": "username",
+      "value": "john_doe"
+    },
+    {
       "key": "courseId",
       "value": "1"
     },
@@ -42,7 +46,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john@example.com\",\n  \"password\": \"secret123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\",\n  \"role\": \"USER\"\n}"
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"email\": \"john@example.com\",\n  \"password\": \"secret123\",\n  \"phoneNumber\": \"+15550001111\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Doe\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/users",
@@ -52,6 +56,33 @@
               "path": [
                 "api",
                 "users"
+              ]
+            }
+          }
+        },
+        {
+          "name": "Create User (Admin - Any Role)",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"username\": \"teacher_user\",\n  \"email\": \"teacher@example.com\",\n  \"password\": \"secret123\",\n  \"phoneNumber\": \"+15550003333\",\n  \"firstName\": \"Teacher\",\n  \"lastName\": \"User\",\n  \"role\": \"TEACHER\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/users/admin",
+              "host": [
+                "{{baseUrl}}"
+              ],
+              "path": [
+                "api",
+                "users",
+                "admin"
               ]
             }
           }
@@ -94,7 +125,7 @@
           "request": {
             "method": "GET",
             "url": {
-              "raw": "{{baseUrl}}/api/users/username/john_doe",
+              "raw": "{{baseUrl}}/api/users/username/{{username}}",
               "host": [
                 "{{baseUrl}}"
               ],
@@ -102,7 +133,7 @@
                 "api",
                 "users",
                 "username",
-                "john_doe"
+                "{{username}}"
               ]
             }
           }
@@ -119,7 +150,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\n  \"username\": \"john_doe\",\n  \"email\": \"john.updated@example.com\",\n  \"password\": \"newsecret123\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Updated\",\n  \"role\": \"INSTRUCTOR\"\n}"
+              "raw": "{\n  \"username\": \"{{username}}\",\n  \"email\": \"john.updated@example.com\",\n  \"password\": \"newsecret123\",\n  \"phoneNumber\": \"+15550002222\",\n  \"firstName\": \"John\",\n  \"lastName\": \"Updated\",\n  \"role\": \"TEACHER\"\n}"
             },
             "url": {
               "raw": "{{baseUrl}}/api/users/{{userId}}",
