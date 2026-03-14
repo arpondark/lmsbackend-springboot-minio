@@ -2,6 +2,7 @@ package site.shazan.lmsbackend.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -31,6 +32,10 @@ public class AdminUserRequest {
     private String lastName;
 
     @NotBlank(message = "Role is required")
+    @Pattern(
+            regexp = "(?i)ADMIN|USER|STUDENT|TEACHER|INSTRUCTOR",
+            message = "Role must be ADMIN, USER/STUDENT, or TEACHER/INSTRUCTOR"
+    )
     private String role;
 }
 

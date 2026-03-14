@@ -30,8 +30,11 @@ public class User {
 
     private String firstName;
     private String lastName;
+    private String profileImageUrl;
+
     @Column(nullable = false)
-    private Role role= Role.USER;
+    @Convert(converter = RoleConverter.class)
+    private Role role = Role.USER;
 
     @ManyToMany
     @JoinTable(

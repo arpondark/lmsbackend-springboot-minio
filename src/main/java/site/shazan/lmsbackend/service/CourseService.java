@@ -1,8 +1,10 @@
 package site.shazan.lmsbackend.service;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 import site.shazan.lmsbackend.dto.CourseRequest;
 import site.shazan.lmsbackend.dto.CourseResponse;
 import site.shazan.lmsbackend.exception.ResourceNotFoundException;
@@ -20,6 +22,7 @@ public class CourseService {
     private final CourseRepository courseRepository;
     private final UserRepository userRepository;
     private final ReviewRepository reviewRepository;
+    private final FileStorageService fileStorageService;
 
     @Transactional
     public CourseResponse createCourse(CourseRequest request) {
@@ -73,6 +76,40 @@ public class CourseService {
             throw new ResourceNotFoundException("Course not found with id: " + id);
         }
         courseRepository.deleteById(id);
+    }
+
+    @Transactional
+    public CourseResponse uploadCourseMedia(Long id, MultipartFile image, MultipartFile video) {
+        Course course = courseRepository.findById(id)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + id));
+
+        if (image != null && !image.isEmpty()) {
+            course.setImageUrl(fileStorageService.storeImage(image, "courses/images"));
+        }
+        if (video != null && !video.isEmpty()) {
+            course.setVideoUrl(fileStorageService.storeVideo(video, "courses/videos"));
+        }
+
+        return mapToResponse(courseRepository.save(course));
+    }
+
+    @Transactional
+    public CourseResponse enrollInCourse(Long courseId, Authentication authentication) {
+        Course course = courseRepository.findById(courseId)
+                .orElseThrow(() -> new ResourceNotFoundException("Course not found with id: " + courseId));
+
+        User user = userRepository.findByUsername(authentication.getName())
+                .orElseThrow(() -> new ResourceNotFoundException("User not found with username: " + authentication.getName()));
+
+        boolean alreadyEnrolled = user.getEnrolledCourses().stream()
+                .anyMatch(existing -> existing.getId().equals(course.getId()));
+
+        if (!alreadyEnrolled) {
+            user.getEnrolledCourses().add(course);
+            userRepository.save(user);
+        }
+
+        return mapToResponse(course);
     }
 
     private void updateCourseFromRequest(Course course, CourseRequest request, User instructor) {
